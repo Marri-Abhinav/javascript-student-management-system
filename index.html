@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Details</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <form  id="studentForm">
+        <label for="name">Name :   </label>
+        <input type="text" id="name"><br>
+         <label for="age">Age     :     </label>
+        <input type="number" id="age"><br>
+         <label for="dept">Department :</label>
+        <input type="text" id="dept"><br>
+        <button type="submit" >Add</button>
+
+    </form>
+    <input type="text" id="search" placeholder="Search Student">
+    <h1>Student Details</h1>
+    <table id="tab" border="1">
+        <tr>
+            <th>Name</th>
+            <th>Age</th>
+            <th>Department</th>
+            <th>Action</th>
+
+        </tr>
+        <tbody id="tabbody">
+
+        </tbody>
+        
+    </table>
+     <script>
+    let students = [];
+
+    const form = document.getElementById("studentForm");
+
+    form.addEventListener("submit", (e) => {
+
+        e.preventDefault();
+
+        const name = document.getElementById("name").value;
+        const age = document.getElementById("age").value;
+        const dept = document.getElementById("dept").value;
+
+        if (name === "" || age === "" || dept === "") {
+            alert("Please fill all fields");
+            return;
+        }
+
+        students.push({
+             id: Date.now(),
+            name,
+            age,
+            dept
+        });
+
+        renderStudents(students);
+
+        form.reset();
+    });
+
+    function renderStudents(data) {
+
+        const body = document.getElementById("tabbody");
+
+        body.innerHTML = "";
+
+        data.forEach(student => {
+
+            body.innerHTML += `
+            <tr>
+                <td>${student.name}</td>
+                <td>${student.age}</td>
+                <td>${student.dept}</td>
+                <td>
+                    <button onclick="delfn(${student.id})">
+                        Delete
+                    </button>
+                </td>
+            </tr>
+            `;
+        });
+    }
+
+    function delfn(id) {
+        students = students.filter(student =>
+        student.id !== id
+    );
+
+    renderStudents(students);
+    }
+    var search=document.getElementById("search");
+    search.addEventListener("input",()=>{
+
+        var value=search.value.toLowerCase();
+        const filtered=students.filter(student =>
+         student.name.toLowerCase().includes(value));
+         renderStudents(filtered);
+
+    });
+</script>
+    
+</body>
+</html>
